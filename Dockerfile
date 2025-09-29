@@ -2,11 +2,11 @@
 FROM oven/bun:1.1.17-alpine as builder
 # Set the working directory inside the container
 WORKDIR /app
-# Copy package.json and bun.lockb to leverage Docker cache
-COPY package.json bun.lockb ./
-# Install dependencies
+# Copy package.json to leverage Docker cache for dependencies
+COPY package.json ./
+# Install dependencies, which will generate bun.lockb
 RUN bun install --frozen-lockfile
-# Copy the rest of the application files
+# Copy the rest of the application files, including the generated bun.lockb
 COPY . .
 # Build the React application for production
 RUN bun run build
