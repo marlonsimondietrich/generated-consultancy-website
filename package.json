@@ -1,5 +1,5 @@
 {
-  "name": "v1-aetherai-consultancy-dd3515b4-0200-4d15-a94a-105e67f405a8",
+	"name": "vite-cfagents-runner",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -7,7 +7,7 @@
 		"dev": "vite --host 0.0.0.0 --port ${PORT:-3000}",
 		"build": "vite build",
 		"lint": "eslint --cache -f json --quiet .",
-		"preview": "bun run build && vite preview --host 0.0.0.0 --port ${PORT:-4173}",
+		"preview": "bun run build && vite preview --host 0.0.0.0 --port ${PORT:-8080}",
 		"deploy": "bun run build && wrangler deploy",
 		"cf-typegen": "wrangler types"
 	},
