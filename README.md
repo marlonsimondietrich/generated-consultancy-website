@@ -83,9 +83,11 @@ The main application logic is contained within the `src` directory.
 
 ## ☁️ Deployment
 
-This project is optimized for deployment on the Cloudflare network.
+This project is optimized for deployment on the Cloudflare network and can also run as a container on Google Cloud Run.
 
-### Deploy with Wrangler CLI
+### Cloudflare Workers / Pages
+
+#### Deploy with Wrangler CLI
 
 1.  **Authenticate with Cloudflare:**
     ```sh
@@ -105,11 +107,37 @@ This project is optimized for deployment on the Cloudflare network.
 
 Wrangler will guide you through the deployment process, which includes uploading the static assets to Cloudflare Pages and deploying the Worker.
 
-### Deploy with the Cloudflare Button
+#### Deploy with the Cloudflare Button
 
 You can also deploy this project with a single click using the button below.
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/marlonsimondietrich/generated-consultancy-website)
+
+### Docker & Google Cloud Run
+
+The repository ships with a production-ready multi-stage `Dockerfile` that builds the static assets and serves them through a lightweight Bun HTTP server that honours the `PORT` environment variable required by Cloud Run.
+
+#### Build and test the container locally
+
+```sh
+docker build -t aetherai-consultancy .
+docker run --rm -p 8080:8080 aetherai-consultancy
+```
+
+#### Deploy to Google Cloud Run
+
+```sh
+gcloud auth login
+gcloud config set project <YOUR_PROJECT_ID>
+gcloud builds submit --tag gcr.io/<YOUR_PROJECT_ID>/aetherai-consultancy
+gcloud run deploy aetherai-consultancy \
+  --image gcr.io/<YOUR_PROJECT_ID>/aetherai-consultancy \
+  --platform managed \
+  --region <YOUR_REGION> \
+  --allow-unauthenticated
+```
+
+Cloud Run injects the `PORT` environment variable automatically, but you can override it at deploy time if necessary. The Docker image serves the pre-built assets from the `dist/` directory.
 
 ## 📜 License
 
