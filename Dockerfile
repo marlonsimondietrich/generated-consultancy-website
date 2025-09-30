@@ -18,5 +18,6 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 # Expose the port the application will run on (default for many platforms is 8080)
 EXPOSE 8080
-# Command to run the application using the defined preview script
-CMD ["bun", "run", "preview"]
+# Command to run the application using Vite's preview server directly
+# This avoids the redundant `build` step in the `preview` script
+CMD ["bunx", "vite", "preview", "--host", "0.0.0.0", "--port", "${PORT:-8080}"]
